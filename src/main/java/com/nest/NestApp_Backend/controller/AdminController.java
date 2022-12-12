@@ -83,4 +83,19 @@ private SecurityDao sdao;
 
         return map;
     }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping(path = "/securitylogin",consumes = "application/json",produces = "application/json")
+    public HashMap<String, String> securityLogin(@RequestBody SecurityGuard s){
+        List<SecurityGuard> result = (List<SecurityGuard>) sdao.login(s.getUsername(),s.getPassword());
+        HashMap<String,String>map=new HashMap<>();
+        if(result.size()==0){
+            map.put("status","failed");
+        }else {
+
+            map.put("status","success");
+        }
+
+        return map;
+    }
 }
