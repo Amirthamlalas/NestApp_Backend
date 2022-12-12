@@ -4,10 +4,7 @@ package com.nest.NestApp_Backend.controller;
 import com.nest.NestApp_Backend.dao.EmployeeDao;
 import com.nest.NestApp_Backend.model.Employees;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +37,36 @@ private EmployeeDao dao;
         dao.deleteEmployee(e.getId());
         HashMap<String,String>map=new HashMap<>();
         map.put("status","success");
+        return map;
+    }
+    @CrossOrigin("*")
+    @GetMapping("/viewemployee")
+    public List<Employees>view(){
+        return (List<Employees>) dao.findAll();
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping(path = "/updateemployee",consumes = "application/json",produces = "application/json")
+    public HashMap<String, String>update(@RequestBody Employees e){
+        String id = String.valueOf(e.getId());
+
+        HashMap<String,String>map=new HashMap<>();
+        map.put("status","success");
+        return map;
+    }
+    @CrossOrigin(origins = "*")
+    @PostMapping(path = "/employeelogin",consumes = "application/json",produces = "application/json")
+    public HashMap<String, String> login(@RequestBody Employees e){
+        List<Employees> result = (List<Employees>) dao.login(e.getUsername(),e.getPassword());
+        HashMap<String,String>map=new HashMap<>();
+        if(result.size()==0){
+            map.put("status","failed");
+        }else {
+            int id = result.get(0).getId();
+            map.put("employeeid",String.valueOf(id));
+            map.put("status","success");
+        }
+
         return map;
     }
 }
