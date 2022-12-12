@@ -32,4 +32,14 @@ private EmployeeDao dao;
         System.out.println(e.getName());
         return (List<Employees>)dao.searchEmployee(e.getName());
     }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping(path = "/deleteemployee",consumes = "application/json",produces = "application/json")
+    public HashMap<String, String>delete(@RequestBody Employees e){
+        String id = String.valueOf(e.getId());
+        dao.deleteEmployee(e.getId());
+        HashMap<String,String>map=new HashMap<>();
+        map.put("status","success");
+        return map;
+    }
 }
