@@ -2,7 +2,9 @@ package com.nest.NestApp_Backend.controller;
 
 
 import com.nest.NestApp_Backend.dao.EmployeeDao;
+import com.nest.NestApp_Backend.dao.SecurityDao;
 import com.nest.NestApp_Backend.model.Employees;
+import com.nest.NestApp_Backend.model.SecurityGuard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,10 +15,22 @@ import java.util.List;
 public class AdminController {
 @Autowired
 private EmployeeDao dao;
+
+@Autowired
+private SecurityDao sdao;
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/addemployee",consumes = "application/json",produces = "application/json")
     public HashMap<String, String> addEmployee(@RequestBody Employees e){
         dao.save(e);
+        HashMap<String,String>map=new HashMap<>();
+        map.put("status","success");
+        return map;
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping(path = "/addsecurity",consumes = "application/json",produces = "application/json")
+    public HashMap<String, String> addSecurity(@RequestBody SecurityGuard s){
+        sdao.save(s);
         HashMap<String,String>map=new HashMap<>();
         map.put("status","success");
         return map;
