@@ -11,6 +11,7 @@ import com.nest.NestApp_Backend.model.SecurityGuard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Year;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,6 +25,8 @@ private SecurityDao sdao;
 
 @Autowired
 private LeaveCounterDao ldao;
+
+int year= Year.now().getValue();
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/addemployee",consumes = "application/json",produces = "application/json")
     public HashMap<String, String> addEmployee(@RequestBody Employees e){
@@ -32,6 +35,10 @@ private LeaveCounterDao ldao;
         map.put("empid",String.valueOf(e.getId()));
         LeaveCounter l = new LeaveCounter();
         l.setEmpid(e.getId());
+        l.setCasualleave(20);
+        l.setSickleave(7);
+        l.setSpecialleave(3);
+        l.setYear(String.valueOf(year));
         ldao.save(l);
         map.put("status","success");
         return map;

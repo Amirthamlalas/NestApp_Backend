@@ -14,21 +14,32 @@ public class LeaveCounter {
     @GeneratedValue
     private int id;
     private int empid;
-    private int sickleave=20;
-    private int casualleave=7;
-    private int specialleave=3;
-    private int Total=30;
+    private int sickleave;
+    private int casualleave;
+    private int specialleave;
+    private String year;
+
+    private int total=30;
 
     public LeaveCounter() {
     }
 
-    public LeaveCounter(int id, int empid, int sickleave, int casualleave, int specialleave, int total) {
+    public LeaveCounter(int id, int empid, int sickleave, int casualleave, int specialleave,  String year,int total) {
         this.id = id;
         this.empid = empid;
         this.sickleave = sickleave;
         this.casualleave = casualleave;
         this.specialleave = specialleave;
-        Total = total;
+        this.year = year;
+        this.total =total;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
     }
 
     public int getId() {
@@ -71,11 +82,11 @@ public class LeaveCounter {
         this.specialleave = specialleave;
     }
 
-    public int getTotal() {
-        return Total;
+    public String getYear() {
+        return year;
     }
 
-    public void setTotal(int total) {
-        Total = total;
+    public void setYear(String year) {
+        this.year = year;
     }
 }
