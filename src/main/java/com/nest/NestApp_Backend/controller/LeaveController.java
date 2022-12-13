@@ -39,9 +39,18 @@ public class LeaveController {
         String status=l.getStatus().toString();
         System.out.println(empid);
         System.out.println(status);
-        dao.updateStatus(l.getEmpid(),l.getStatus());
-        HashMap<String,String> map=new HashMap<>();
-        map.put("status","success");
+        List<LeaveApplication> result=dao.updateStatus(l.getEmpid(),l.getStatus());
+        HashMap< String,String> map=new HashMap<>();
+        if(result.size()==0)
+        {
+            map.put("status","failed");
+        }
+        else {
+            String leavetype=result.get(0).getLeavetype();
+            map.put("leaveType",String.valueOf(leavetype));
+            map.put("status","success");
+        }
+
         return map;
     }
 
