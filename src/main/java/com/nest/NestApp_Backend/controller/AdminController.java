@@ -2,8 +2,11 @@ package com.nest.NestApp_Backend.controller;
 
 
 import com.nest.NestApp_Backend.dao.EmployeeDao;
+import com.nest.NestApp_Backend.dao.LeaveCounterDao;
+import com.nest.NestApp_Backend.dao.LeaveDao;
 import com.nest.NestApp_Backend.dao.SecurityDao;
 import com.nest.NestApp_Backend.model.Employees;
+import com.nest.NestApp_Backend.model.LeaveCounter;
 import com.nest.NestApp_Backend.model.SecurityGuard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +21,18 @@ private EmployeeDao dao;
 
 @Autowired
 private SecurityDao sdao;
+
+@Autowired
+private LeaveCounterDao ldao;
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/addemployee",consumes = "application/json",produces = "application/json")
     public HashMap<String, String> addEmployee(@RequestBody Employees e){
         dao.save(e);
         HashMap<String,String>map=new HashMap<>();
+        map.put("empid",String.valueOf(e.getId()));
+        LeaveCounter l = new LeaveCounter();
+        l.setEmpid(e.getId());
+        ldao.save(l);
         map.put("status","success");
         return map;
     }
