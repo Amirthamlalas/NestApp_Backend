@@ -1,20 +1,21 @@
 package com.nest.NestApp_Backend.controller;
 
 
-import com.nest.NestApp_Backend.dao.EmployeeDao;
-import com.nest.NestApp_Backend.dao.LeaveCounterDao;
-import com.nest.NestApp_Backend.dao.LeaveDao;
-import com.nest.NestApp_Backend.dao.SecurityDao;
-import com.nest.NestApp_Backend.model.Employees;
-import com.nest.NestApp_Backend.model.LeaveApplication;
-import com.nest.NestApp_Backend.model.LeaveCounter;
-import com.nest.NestApp_Backend.model.SecurityGuard;
+import com.nest.NestApp_Backend.dao.*;
+import com.nest.NestApp_Backend.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.time.Year;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
 
 @RestController
 public class AdminController {
@@ -27,7 +28,14 @@ private SecurityDao sdao;
 @Autowired
 private LeaveCounterDao ldao;
 
+    @Autowired
+    private LoginDao lodao;
+
 int year= Year.now().getValue();
+
+
+    Date currentdate=new Date();
+
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/addemployee",consumes = "application/json",produces = "application/json")
     public HashMap<String, String> addEmployee(@RequestBody Employees e){
@@ -41,6 +49,10 @@ int year= Year.now().getValue();
         l.setSpecialleave(3);
         l.setYear(String.valueOf(year));
         ldao.save(l);
+
+
+
+
         map.put("status","success");
         return map;
     }
@@ -79,6 +91,13 @@ int year= Year.now().getValue();
         return (List<Employees>) dao.findAll();
     }
 
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/viewemployeelog")
+    public List<EmployeeLog>employeeLogsview(){
+        return (List<EmployeeLog>) lodao.findAll();
+    }
+
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/updateemployee",consumes = "application/json",produces = "application/json")
     public HashMap<String, String>update(@RequestBody Employees e){
@@ -99,6 +118,13 @@ int year= Year.now().getValue();
             int id = result.get(0).getId();
             map.put("employeeid",String.valueOf(id));
             map.put("status","success");
+
+            EmployeeLog el = new EmployeeLog();
+            el.setEmpid(id);
+            el.setDate(String.valueOf(currentdate));
+            el.setEntry_time(String.valueOf(currentdate));
+            el.setExit_time(String.valueOf(currentdate));
+            lodao.save(el);
         }
 
         return map;
@@ -109,6 +135,7 @@ int year= Year.now().getValue();
     public List<Employees>viewProfile(@RequestBody Employees e){
         String id= String.valueOf(e.getId());
         System.out.println(id);
+
         return (List<Employees>)dao.ViewProfile(e.getId());
     }
 
