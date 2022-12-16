@@ -19,20 +19,31 @@ public class VisitorLog {
     private String entry_time;
     private String exit_time;
 
+    private String date;
+
     public VisitorLog() {
     }
 
-    public VisitorLog(int id, String name, String purpose, String whom_to_meet, String entry_time, String exit_time) {
+    public VisitorLog(int id, String name, String purpose, String whom_to_meet, String entry_time, String exit_time,String date) {
         this.id = id;
         this.name = name;
         this.purpose = purpose;
         this.whom_to_meet = whom_to_meet;
         this.entry_time = entry_time;
         this.exit_time = exit_time;
+        this.date=date;
     }
 
     public int getId() {
         return id;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public void setId(int id) {

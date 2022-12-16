@@ -29,6 +29,9 @@ private SecurityDao sdao;
 private LeaveCounterDao ldao;
 
     @Autowired
+    private VisitorDao vdao;
+
+    @Autowired
     private LoginDao lodao;
 
 int year= Year.now().getValue();
@@ -147,14 +150,28 @@ int year= Year.now().getValue();
         return map;
         }
     @CrossOrigin(origins = "*")
-    @PostMapping(path = "viewprofile",produces = "application/json",consumes = "application/json")
+    @PostMapping(path = "/viewprofile",produces = "application/json",consumes = "application/json")
     public List<Employees>viewProfile(@RequestBody Employees e){
         String id= String.valueOf(e.getId());
         System.out.println(id);
 
         return (List<Employees>)dao.ViewProfile(e.getId());
     }
+    @CrossOrigin(origins = "*")
+    @PostMapping(path = "/viewdailyemployee",produces = "application/json",consumes = "application/json")
+    public List<EmployeeLog>viewdailyEmployee(@RequestBody EmployeeLog e){
 
+
+        return (List<EmployeeLog>)lodao.searchlog(e.getDate());
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping(path = "/viewdailyvisitor",produces = "application/json",consumes = "application/json")
+    public List<VisitorLog>viewdailyvisitor(@RequestBody VisitorLog v){
+
+
+        return (List<VisitorLog>)vdao.searchlog(v.getDate());
+    }
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/securitylogin",consumes = "application/json",produces = "application/json")
     public HashMap<String, String> securityLogin(@RequestBody SecurityGuard s){
