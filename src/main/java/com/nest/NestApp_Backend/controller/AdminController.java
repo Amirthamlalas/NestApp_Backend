@@ -127,9 +127,25 @@ int year= Year.now().getValue();
             lodao.save(el);
         }
 
+
+
         return map;
     }
 
+
+
+    @CrossOrigin(origins = "*")
+    @PostMapping(path = "/employeelogout",consumes = "application/json",produces = "application/json")
+    public HashMap<String, String> logout(@RequestBody EmployeeLog l){
+        String id = String.valueOf(l.getEmpid());
+        String exit = String.valueOf(currentdate);
+        lodao.updateExit(exit, l.getEmpid());
+        HashMap<String,String>map=new HashMap<>();
+
+        map.put("status","success");
+
+        return map;
+        }
     @CrossOrigin(origins = "*")
     @PostMapping(path = "viewprofile",produces = "application/json",consumes = "application/json")
     public List<Employees>viewProfile(@RequestBody Employees e){

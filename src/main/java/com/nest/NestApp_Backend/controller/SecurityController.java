@@ -4,14 +4,13 @@ import com.nest.NestApp_Backend.dao.EmployeeDao;
 import com.nest.NestApp_Backend.dao.LoginDao;
 import com.nest.NestApp_Backend.dao.VisitorDao;
 import com.nest.NestApp_Backend.model.EmployeeLog;
+import com.nest.NestApp_Backend.model.Employees;
 import com.nest.NestApp_Backend.model.VisitorLog;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 public class SecurityController {
@@ -29,7 +28,11 @@ public class SecurityController {
         return map;
 
     }
-
+    @CrossOrigin(origins = "*")
+    @GetMapping("/viewvisitorlog")
+    public List<VisitorLog> view(){
+        return (List<VisitorLog>) dao.findAll();
+    }
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/employeelog",consumes = "application/json",produces = "application/json")
     public HashMap<String, String> employeelog(@RequestBody EmployeeLog e){
