@@ -6,6 +6,7 @@ import com.nest.NestApp_Backend.dao.LeaveCounterDao;
 import com.nest.NestApp_Backend.dao.LeaveDao;
 import com.nest.NestApp_Backend.dao.SecurityDao;
 import com.nest.NestApp_Backend.model.Employees;
+import com.nest.NestApp_Backend.model.LeaveApplication;
 import com.nest.NestApp_Backend.model.LeaveCounter;
 import com.nest.NestApp_Backend.model.SecurityGuard;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,8 @@ int year= Year.now().getValue();
         return map;
     }
 
+
+
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/addsecurity",consumes = "application/json",produces = "application/json")
     public HashMap<String, String> addSecurity(@RequestBody SecurityGuard s){
@@ -57,8 +60,8 @@ int year= Year.now().getValue();
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/searchemployee",consumes = "application/json",produces = "application/json")
     public List<Employees>searchEmployee(@RequestBody Employees e){
-        System.out.println(e.getName());
-        return (List<Employees>)dao.searchEmployee(e.getName());
+        System.out.println(e.getEmpid());
+        return (List<Employees>)dao.searchEmployee(e.getEmpid());
     }
 
     @CrossOrigin(origins = "*")
@@ -70,7 +73,7 @@ int year= Year.now().getValue();
         map.put("status","success");
         return map;
     }
-    @CrossOrigin("*")
+    @CrossOrigin(origins = "*")
     @GetMapping("/viewemployee")
     public List<Employees>view(){
         return (List<Employees>) dao.findAll();
@@ -99,6 +102,14 @@ int year= Year.now().getValue();
         }
 
         return map;
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping(path = "viewprofile",produces = "application/json",consumes = "application/json")
+    public List<Employees>viewProfile(@RequestBody Employees e){
+        String id= String.valueOf(e.getId());
+        System.out.println(id);
+        return (List<Employees>)dao.ViewProfile(e.getId());
     }
 
     @CrossOrigin(origins = "*")

@@ -11,8 +11,11 @@ import java.util.List;
 
 public interface EmployeeDao extends CrudRepository<Employees,Integer> {
 
-    @Query(value = "SELECT `id`, `designation`, `email`, `empid`, `name`, `password`, `phoneno`, `salary`, `username` FROM `employees` WHERE `name`= :name",nativeQuery = true)
-    List<Employees>searchEmployee(@Param("name")String name);
+    @Query(value = "SELECT `id`, `designation`, `email`, `empid`, `name`, `password`, `phoneno`, `salary`, `username` FROM `employees` WHERE `empid`= :empid",nativeQuery = true)
+    List<Employees>searchEmployee(@Param("empid")Integer empid);
+
+    @Query(value = "SELECT `id`, `designation`, `email`, `empid`, `name`, `password`, `phoneno`, `salary`, `username` FROM `employees` WHERE `id`= :id",nativeQuery = true)
+    List<Employees>ViewProfile(@Param("id")Integer id);
 
     @Modifying
     @Transactional
