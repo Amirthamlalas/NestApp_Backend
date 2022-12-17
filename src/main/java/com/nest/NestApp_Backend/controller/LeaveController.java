@@ -31,9 +31,19 @@ public class LeaveController {
     @PostMapping(path = "/applyleave",consumes = "application/json",produces = "application/json")
     public HashMap<String, String> applyLeave(@RequestBody LeaveApplication l){
         l.setApply_date(String.valueOf(currentdate));
+        l.setStatus(0);
+
         dao.save(l);
+        List<LeaveApplication>result=(List<LeaveApplication>)dao.id(l.getEmpid());
         HashMap<String,String>map=new HashMap<>();
-        map.put("status","success");
+        if(result.size()==0){
+            map.put("status","failed");
+        }else {
+            int id = result.get(0).getId();
+            map.put("id",String.valueOf(id));
+            map.put("status","success");
+
+        }
         return map;
     }
 
@@ -51,7 +61,7 @@ public class LeaveController {
         String status=String.valueOf(l.getStatus());
         System.out.println(empid);
         System.out.println(status);
-        dao.updateStatus(l.getEmpid(),l.getStatus());
+        dao.updateStatus(l.getEmpid(),l.getStatus(),l.getId());
         HashMap< String,String> map=new HashMap<>();
 
             map.put("status","success");
@@ -122,8 +132,8 @@ public class LeaveController {
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/searchstatus",consumes = "application/json",produces = "application/json")
     public List<LeaveApplication>searchstatus(@RequestBody LeaveApplication l){
-        System.out.println(l.getEmpid());
-        return (List<LeaveApplication>)dao.searchStatus(l.getEmpid());
+        System.out.println(l.getId());
+        return (List<LeaveApplication>)dao.searchStatus(l.getId());
     }
 
 
