@@ -46,7 +46,7 @@ int year= Year.now().getValue();
         HashMap<String,String>map=new HashMap<>();
         map.put("empid",String.valueOf(e.getId()));
         LeaveCounter l = new LeaveCounter();
-        l.setEmpid(e.getId());
+        l.setEmpid(e.getEmpid());
         l.setCasualleave(20);
         l.setSickleave(7);
         l.setSpecialleave(3);
