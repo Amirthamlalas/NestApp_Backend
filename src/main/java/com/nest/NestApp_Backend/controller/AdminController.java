@@ -119,11 +119,13 @@ int year= Year.now().getValue();
             map.put("status","failed");
         }else {
             int id = result.get(0).getId();
+            int empid=result.get(0).getEmpid();
             map.put("employeeid",String.valueOf(id));
+            map.put("empidd",String.valueOf(empid));
             map.put("status","success");
 
             EmployeeLog el = new EmployeeLog();
-            el.setEmpid(id);
+            el.setEmpid(empid);
             el.setDate(String.valueOf(currentdate));
             el.setEntry_time(String.valueOf(currentdate));
             el.setExit_time(String.valueOf(currentdate));

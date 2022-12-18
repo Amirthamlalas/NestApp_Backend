@@ -76,7 +76,7 @@ public class LeaveController {
 
         String empid=String.valueOf(l.getEmpid());
 
-        List<LeaveApplication> result1 = (List<LeaveApplication>) dao.searchStatus(l.getEmpid());
+        List<LeaveApplication> result1 = (List<LeaveApplication>) dao.counterStatus(l.getEmpid());
         l.setLeavetype(result1.get(0).getLeavetype());
 
         LocalDate from_date = LocalDate.parse(result1.get(0).getFrom_data());
@@ -126,7 +126,10 @@ public class LeaveController {
             return map;
         }
         HashMap< String,String> map=new HashMap<>();
+        List<LeaveCounter> result3= (List<LeaveCounter>) ldao.Leaves(l.getEmpid());
+        int val=result3.get(0).getTotal();
         map.put("status","success");
+
         return map;
     }
     @CrossOrigin(origins = "*")
