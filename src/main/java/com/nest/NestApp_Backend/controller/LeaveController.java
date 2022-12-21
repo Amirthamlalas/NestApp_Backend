@@ -76,9 +76,9 @@ public class LeaveController {
 
         String empid=String.valueOf(l.getEmpid());
 
-        List<LeaveApplication> result1 = (List<LeaveApplication>) dao.counterStatus(l.getEmpid());
-        l.setLeavetype(result1.get(0).getLeavetype());
-
+        List<LeaveApplication> result1 = (List<LeaveApplication>) dao.id(l.getEmpid());
+        String leave= (result1.get(0).getLeavetype());
+        System.out.println(leave);
         LocalDate from_date = LocalDate.parse(result1.get(0).getFrom_data());
         LocalDate to_date = LocalDate.parse(result1.get(0).getTo_date());
 
@@ -96,7 +96,7 @@ public class LeaveController {
 
 
 
-        if (l.getLeavetype().equalsIgnoreCase("casual") && daysDiff<=casual){
+        if (leave.equalsIgnoreCase("casual") && daysDiff<=casual){
             casual=casual-daysDiff;
             sick=sick;
             special=special;
@@ -105,13 +105,13 @@ public class LeaveController {
             ldao.updateCounter(l.getEmpid(), (int) total, (int) casual, (int) sick, (int) special);
 
 
-        } else if (l.getLeavetype().equalsIgnoreCase("sick") && daysDiff<=sick) {
+        } else if (leave.equalsIgnoreCase("sick") && daysDiff<=sick) {
             casual=casual;
             sick=sick-daysDiff;
             special=special;
             total=casual+sick+special;
             ldao.updateCounter(l.getEmpid(), (int) total, (int) casual, (int) sick, (int) special);
-        }else if(l.getLeavetype().equalsIgnoreCase("special") && daysDiff<=special) {
+        }else if(leave.equalsIgnoreCase("special") && daysDiff<=special) {
             casual=casual;
             sick=sick;
             special=special-daysDiff;
@@ -120,9 +120,14 @@ public class LeaveController {
         }else{
             HashMap<String,String> map=new HashMap<>();
             map.put("leavetype", l.getLeavetype());
-            String id=String.valueOf(result.get(0).getEmpid());
-            map.put("empid", id);
-            map.put("message", "no leaves");
+            if(result1.size()==0){
+                map.put("status","failed");
+            }else {
+                int id = result.get(0).getId();
+                map.put("id",String.valueOf(id));
+                map.put("status","success");
+
+            }
             return map;
         }
         HashMap< String,String> map=new HashMap<>();
@@ -131,6 +136,13 @@ public class LeaveController {
         map.put("status","success");
 
         return map;
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping(path = "/counterview",consumes = "application/json",produces = "application/json")
+    public List<LeaveCounter> viewcounter(@RequestBody LeaveCounter l){
+        return (List<LeaveCounter>)ldao.Leaves(l.getEmpid());
+
     }
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/searchstatus",consumes = "application/json",produces = "application/json")

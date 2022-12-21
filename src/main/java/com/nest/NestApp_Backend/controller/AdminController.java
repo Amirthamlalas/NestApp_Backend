@@ -142,9 +142,11 @@ int year= Year.now().getValue();
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/employeelogout",consumes = "application/json",produces = "application/json")
     public HashMap<String, String> logout(@RequestBody EmployeeLog l){
-        String id = String.valueOf(l.getEmpid());
-        String exit = String.valueOf(currentdate);
-        lodao.updateExit(exit, l.getEmpid());
+        String id = String.valueOf(l.getId());
+        String exit_time = String.valueOf(currentdate);
+        lodao.updateExit(exit_time, l.getId());
+        System.out.println(exit_time);
+        l.setExit_time(exit_time);
         HashMap<String,String>map=new HashMap<>();
 
         map.put("status","success");

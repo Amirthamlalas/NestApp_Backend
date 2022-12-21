@@ -13,10 +13,15 @@ public interface LoginDao extends CrudRepository<EmployeeLog,Integer> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE `employeelogin` SET `exit_time`= :exit_time WHERE `empid`= :empid",nativeQuery = true)
-    void updateExit(@Param("exit_time")String exit_time,@Param("empid")Integer empid);
+    @Query(value = "UPDATE `employeelogin` SET `exit_time`= :exit_time WHERE `id`= :id",nativeQuery = true)
+    void updateExit(@Param("exit_time")String exit_time,@Param("id")Integer id);
 
 @Query(value = "SELECT `id`, `date`, `empid`, `entry_time`, `exit_time` FROM `employeelogin` WHERE `date`= :date",nativeQuery = true)
 List<EmployeeLog> searchlog(@Param("date")String date);
 
+
+    @Query(value = "SELECT l.`id`, l.`date`, l.`empid`, l.`entry_time`, l.`exit_time`,e.name FROM `employeelogin` l JOIN employees e ON l.empid = e.empid",nativeQuery = true)
+    List<EmployeeLog>emplog(@Param("empid")Integer empid);
 }
+
+
